@@ -63,6 +63,7 @@ pnpm docker:dev:detached
 ```
 
 This will:
+
 - Start Neon Local proxy on port 5432
 - Start your application on port 3000
 - Automatically create ephemeral branches for development
@@ -204,6 +205,7 @@ docker exec -it acquisitions-app-dev sh
 ### Neon Local (Development)
 
 Neon Local automatically handles:
+
 - Ephemeral branch creation
 - Database migrations
 - Connection pooling
@@ -212,6 +214,7 @@ Neon Local automatically handles:
 ### Neon Cloud (Production)
 
 For production, ensure you have:
+
 - A Neon Cloud database created
 - Proper connection string with SSL
 - Environment variables configured
@@ -234,23 +237,25 @@ pnpm db:studio
 
 ### Environment Variables
 
-| Variable | Development | Production | Description |
-|----------|-------------|------------|-------------|
-| `NODE_ENV` | `development` | `production` | Environment mode |
-| `PORT` | `3000` | `3000` | Application port |
-| `DATABASE_URL` | Neon Local URL | Neon Cloud URL | Database connection |
-| `JWT_SECRET` | Dev secret | Secure secret | JWT signing key |
-| `JWT_EXPIRES_IN` | `1d` | `1d` | JWT expiration |
-| `LOG_LEVEL` | `debug` | `info` | Logging level |
-| `CORS_ORIGIN` | `http://localhost:3000` | `https://yourdomain.com` | CORS origin |
+| Variable         | Development             | Production               | Description         |
+| ---------------- | ----------------------- | ------------------------ | ------------------- |
+| `NODE_ENV`       | `development`           | `production`             | Environment mode    |
+| `PORT`           | `3000`                  | `3000`                   | Application port    |
+| `DATABASE_URL`   | Neon Local URL          | Neon Cloud URL           | Database connection |
+| `JWT_SECRET`     | Dev secret              | Secure secret            | JWT signing key     |
+| `JWT_EXPIRES_IN` | `1d`                    | `1d`                     | JWT expiration      |
+| `LOG_LEVEL`      | `debug`                 | `info`                   | Logging level       |
+| `CORS_ORIGIN`    | `http://localhost:3000` | `https://yourdomain.com` | CORS origin         |
 
 ### Docker Compose Services
 
 #### Development (`docker-compose.dev.yml`)
+
 - **neon-local**: Neon Local proxy (port 5432)
 - **app**: Application container (port 3000)
 
 #### Production (`docker-compose.prod.yml`)
+
 - **app**: Application container (port 3000)
 - **nginx**: Optional reverse proxy (ports 80/443)
 
@@ -259,38 +264,42 @@ pnpm db:studio
 ### Common Issues
 
 1. **Port Already in Use**
+
    ```bash
    # Check what's using the port
    lsof -i :3000
    lsof -i :5432
-   
+
    # Kill the process or change ports in docker-compose
    ```
 
 2. **Database Connection Issues**
+
    ```bash
    # Check Neon Local is running
    docker ps | grep neon-local
-   
+
    # Check database connectivity
    docker exec -it acquisitions-app-dev pg_isready -h neon-local -p 5432
    ```
 
 3. **Permission Issues**
+
    ```bash
    # Fix file permissions
    sudo chown -R $USER:$USER .
-   
+
    # Rebuild containers
    docker-compose -f docker-compose.dev.yml down
    docker-compose -f docker-compose.dev.yml up --build
    ```
 
 4. **Environment Variables Not Loading**
+
    ```bash
    # Check environment file exists
    ls -la .env*
-   
+
    # Verify Docker is reading the file
    docker-compose -f docker-compose.dev.yml config
    ```
@@ -325,11 +334,13 @@ docker-compose -f docker-compose.dev.yml logs -f app
 ## 🔒 Security Considerations
 
 ### Development
+
 - Uses development JWT secrets
 - CORS allows localhost
 - Debug logging enabled
 
 ### Production
+
 - **Use strong JWT secrets**
 - **Configure proper CORS origins**
 - **Enable SSL/TLS**

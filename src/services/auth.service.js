@@ -4,7 +4,7 @@ import { db } from '#config/database.js';
 import { eq } from 'drizzle-orm';
 import { users } from '#models/user.model.js';
 
-export const hashPassword = async (password) => {
+export const hashPassword = async password => {
   try {
     return await bcrypt.hash(password, 10);
   } catch (error) {
@@ -26,13 +26,20 @@ export const comparePassword = async (password, hashedPassword) => {
 
 export const authenticateUser = async (email, password) => {
   try {
-    const [existingUser] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const [existingUser] = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
     if (!existingUser) {
       throw new Error('User not found');
     }
 
-    const isPasswordValid = await comparePassword(password, existingUser.password);
+    const isPasswordValid = await comparePassword(
+      password,
+      existingUser.password
+    );
 
     if (!isPasswordValid) {
       throw new Error('Invalid password');
@@ -54,7 +61,11 @@ export const authenticateUser = async (email, password) => {
 
 export const createUser = async (name, email, password, role) => {
   try {
-    const existingUser = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
     if (existingUser.length > 0) {
       throw new Error('User already exists');
@@ -62,18 +73,21 @@ export const createUser = async (name, email, password, role) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const [newUser] = await db.insert(users).values({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-    }).returning({
-      id: users.id,
-      name: users.name,
-      email: users.email,
-      role: users.role,
-      createdAt: users.createdAt,
-    });
+    const [newUser] = await db
+      .insert(users)
+      .values({
+        name,
+        email,
+        password: hashedPassword,
+        role,
+      })
+      .returning({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        role: users.role,
+        createdAt: users.createdAt,
+      });
 
     return newUser;
   } catch (error) {
