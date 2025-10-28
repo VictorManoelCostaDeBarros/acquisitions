@@ -1,7 +1,7 @@
-import logger from "#config/logger.js";
-import { getAllUsers, getUserById, updateUser, deleteUser } from "#services/users.service.js";
-import { updateUserSchema, userIdSchema } from "#validations/users.validation.js";
-import { formatValidationErrors } from "#utils/format.js";
+import logger from '#config/logger.js';
+import { getAllUsers, getUserById, updateUser, deleteUser } from '#services/users.service.js';
+import { updateUserSchema, userIdSchema } from '#validations/users.validation.js';
+import { formatValidationErrors } from '#utils/format.js';
 
 export const fetchAllUsers = async (req, res, next) => {
   try {
@@ -11,7 +11,7 @@ export const fetchAllUsers = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'Users fetched successfully',
-      users: users,
+      users,
       count: users.length,
     });
   } catch (error) {
@@ -28,7 +28,7 @@ export const fetchUserById = async (req, res, next) => {
     const idValidation = userIdSchema.safeParse({ id: req.params.id });
     if (!idValidation.success) {
       return res.status(400).json({ 
-        error: "Validation failed", 
+        error: 'Validation failed', 
         details: formatValidationErrors(idValidation.error) 
       });
     }
@@ -37,7 +37,7 @@ export const fetchUserById = async (req, res, next) => {
 
     return res.status(200).json({
       message: 'User fetched successfully',
-      user: user,
+      user,
     });
   } catch (error) {
     logger.error(`Error fetching user by ID: ${error}`);
@@ -58,7 +58,7 @@ export const updateUserById = async (req, res, next) => {
     const idValidation = userIdSchema.safeParse({ id: req.params.id });
     if (!idValidation.success) {
       return res.status(400).json({ 
-        error: "Validation failed", 
+        error: 'Validation failed', 
         details: formatValidationErrors(idValidation.error) 
       });
     }
@@ -67,7 +67,7 @@ export const updateUserById = async (req, res, next) => {
     const bodyValidation = updateUserSchema.safeParse(req.body);
     if (!bodyValidation.success) {
       return res.status(400).json({ 
-        error: "Validation failed", 
+        error: 'Validation failed', 
         details: formatValidationErrors(bodyValidation.error) 
       });
     }
@@ -117,7 +117,7 @@ export const deleteUserById = async (req, res, next) => {
     const idValidation = userIdSchema.safeParse({ id: req.params.id });
     if (!idValidation.success) {
       return res.status(400).json({ 
-        error: "Validation failed", 
+        error: 'Validation failed', 
         details: formatValidationErrors(idValidation.error) 
       });
     }

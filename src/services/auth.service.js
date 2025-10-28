@@ -1,8 +1,8 @@
-import logger from "#config/logger.js"
+import logger from '#config/logger.js';
 import bcrypt from 'bcrypt';
-import { db } from "#config/database.js";
-import { eq } from "drizzle-orm";
-import { users } from "#models/user.model.js";
+import { db } from '#config/database.js';
+import { eq } from 'drizzle-orm';
+import { users } from '#models/user.model.js';
 
 export const hashPassword = async (password) => {
   try {
@@ -12,7 +12,7 @@ export const hashPassword = async (password) => {
 
     throw new Error('Error hashing the password');
   }
-}
+};
 
 export const comparePassword = async (password, hashedPassword) => {
   try {
@@ -22,7 +22,7 @@ export const comparePassword = async (password, hashedPassword) => {
 
     throw new Error('Error comparing the password');
   }
-}
+};
 
 export const authenticateUser = async (email, password) => {
   try {
@@ -50,7 +50,7 @@ export const authenticateUser = async (email, password) => {
 
     throw error;
   }
-}
+};
 
 export const createUser = async (name, email, password, role) => {
   try {
@@ -81,4 +81,4 @@ export const createUser = async (name, email, password, role) => {
 
     throw new Error('Error creating the user');
   }
-}
+};

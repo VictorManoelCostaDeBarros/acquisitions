@@ -21,4 +21,4 @@ export const jwttoken = {
       throw new Error('Failed to verify JWT token');
     }
   },
-}
+};

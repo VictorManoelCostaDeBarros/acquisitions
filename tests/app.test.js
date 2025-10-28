@@ -27,4 +27,4 @@ describe('API Endpoints', () => {
       expect(response.body.error).toBe('Route not found');
     });
   });
-})
+});

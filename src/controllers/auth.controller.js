@@ -1,16 +1,16 @@
-import logger from "#config/logger.js";
-import { createUser, authenticateUser } from "#services/auth.service.js";
-import { jwttoken } from "#utils/jwt.js";
-import { signUpSchema, signInSchema } from "#validations/auth.validation.js"
-import { formatValidationErrors } from "#utils/format.js";
-import { cookies } from "#utils/cookies.js";
+import logger from '#config/logger.js';
+import { createUser, authenticateUser } from '#services/auth.service.js';
+import { jwttoken } from '#utils/jwt.js';
+import { signUpSchema, signInSchema } from '#validations/auth.validation.js';
+import { formatValidationErrors } from '#utils/format.js';
+import { cookies } from '#utils/cookies.js';
 
 export const signUp = async (req,res, next) => {
   try {
     const validationResults = signUpSchema.safeParse(req.body);
 
     if (!validationResults.success) {
-      return res.status(400).json({ error: "Validation failed", details: formatValidationErrors(validationResults.error) });
+      return res.status(400).json({ error: 'Validation failed', details: formatValidationErrors(validationResults.error) });
     }
 
     const { name, email, password, role } = validationResults.data;
@@ -37,19 +37,19 @@ export const signUp = async (req,res, next) => {
     logger.error('Failed to sign up', error);
 
     if (error.message === 'User with this email already exists') {
-      return res.status(409).json({ message: 'Email already exists'})
+      return res.status(409).json({ message: 'Email already exists'});
     }
 
     next(error);
   }
-}
+};
 
 export const signIn = async (req, res, next) => {
   try {
     const validationResults = signInSchema.safeParse(req.body);
 
     if (!validationResults.success) {
-      return res.status(400).json({ error: "Validation failed", details: formatValidationErrors(validationResults.error) });
+      return res.status(400).json({ error: 'Validation failed', details: formatValidationErrors(validationResults.error) });
     }
 
     const { email, password } = validationResults.data;
@@ -76,16 +76,16 @@ export const signIn = async (req, res, next) => {
     logger.error('Failed to sign in', error);
 
     if (error.message === 'User not found') {
-      return res.status(404).json({ message: 'User not found' })
+      return res.status(404).json({ message: 'User not found' });
     }
 
     if (error.message === 'Invalid password') {
-      return res.status(401).json({ message: 'Invalid credentials' })
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     next(error);
   }
-}
+};
 
 export const signOut = async (req, res, next) => {
   try {
@@ -102,4 +102,4 @@ export const signOut = async (req, res, next) => {
 
     next(error);
   }
-}
+};
